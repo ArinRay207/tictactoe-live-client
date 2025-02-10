@@ -1,38 +1,232 @@
+:root {
+  --cross-color: #aa405c;
+  --naught-color: #fea674;
+  --background-color: #260b2c;
+  --grid-lines-color: #55194f;
+  --neutral-color: #d56059;
+  --button-color: #6b2256;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+}
+
 .App {
+  height: 100vh;
+  background-color: var(--background-color);
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.home{
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  gap: 5%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+
+.btn {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  padding: 0.7em;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  gap: 0.5em;
+  width: 225px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.btn.disabled {
+  display: none;
+  /* background-color: var(--background-color); */
+}
+
+.tile.disabled {
+  cursor: default;
+}
+
+.btn-container {
+  justify-content: center;
+  display: flex;
+  gap: 1.5em;
+}
+
+.board {
+  font-size: 6em;
+  font-weight: 500;
+  width: 5em;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  aspect-ratio: 1;
+  gap: 2%;
+}
+
+.tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background-color);
+  aspect-ratio: 1;
+}
+
+.cross {
+  color: var(--cross-color);
+}
+
+.neutral {
+  color: var(--neutral-color);
+}
+
+.tite .naught, .tile .cross {
+  position: absolute;
+}
+
+.naught {
+  color: var(--naught-color);
+}
+
+.cross, .naught, .neutral {
+  font-size: 7rem;
+  transition: opacity 0.2s !important;
+}
+
+.cross.invert {
+  background-color: var(--cross-color);
+  color: var(--background-color);
+}
+
+.neutral.invert {
+  background-color: var(--neutral-color);
+  color: var(--background-color);
+}
+
+.naught.invert {
+  background-color: var(--naught-color);
+  color: var(--background-color);
+}
+
+.btn {
+  background-color: var(--button-color);
+  color: var(--background-color);
+}
+
+.board {
+  background-color: var(--grid-lines-color);
+}
+
+.input {
+  text-align: center;
+  width: 25rem;
+  font-size: 3rem;
+  border: none;
+  border-bottom: solid;
+  background-color: var(--background-color);
+  color: var(--button-color);
+}
+
+.input:focus-visible {
+  /* border: none; */
+  outline: none;
+}
+
+.input::placeholder {
+  color: #55194fa7;
+}
+
+.heading {
+  font-size: 4em;
+  font-weight: 700;
+  color: var(--neutral-color);
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-container {
+  height: 85vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 10vh;
 }
 
-.App-link {
-  color: #61dafb;
+.board-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  width: 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.user-name, .room-id {
+  font-size: 2em;
+  color: #d56059;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.room {
+  height: 100vh;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+}
+
+.win .cross {
+  color: var(--grid-lines-color);
+}
+
+.win .naught {
+  color: var(--grid-lines-color);
+}
+
+.draw .cross, .draw .naught {
+  color: var(--grid-lines-color);
+}
+
+.win:has(.cross.visible) {
+  background-color: var(--cross-color);
+}
+
+.win:has(.naught.visible) {
+  background-color: var(--naught-color);
+}
+
+.draw:has(.cross.visible), .draw:has(.naught.visible) {
+  background-color: var(--neutral-color);
+} 
+
+.invisible {
+  opacity: 0;
+}
+
+.visible {
+  opacity: 1;
+}
+
+.x-player.current-turn:hover .cross.invisible {
+  opacity: 0.2;
+}
+
+.o-player.current-turn:hover .naught.invisible {
+  opacity: 0.2;
+}
+
+.current-turn {
+  cursor: pointer;
 }
