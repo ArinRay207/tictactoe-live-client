@@ -1,4 +1,7 @@
 import { io } from 'socket.io-client';
-const URL = 'wss://https://tictactoe-live-server-e1b16r1ci-arinray207s-projects.vercel.app/';
+const URL = 'http://localhost:8080';
 
-export const socket = io(URL);
+export const socket = io(URL, {
+    transports: ['websocket'],
+    withCredentials: true,
+});
