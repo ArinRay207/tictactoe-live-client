@@ -1,4 +1,4 @@
 import { io } from 'socket.io-client';
-const URL = process.env.NODE_ENV === 'production' ? undefined : 'https://tic-tac-toe-live-server.vercel.app/';
+const URL = 'wss://https://tictactoe-live-server-e1b16r1ci-arinray207s-projects.vercel.app/';
 
 export const socket = io(URL);
