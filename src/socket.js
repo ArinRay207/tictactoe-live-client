@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-const URL = 'http://localhost:8080';
+const URL = 'wss://tictactoe-live-server.onrender.com/';
 
 export const socket = io(URL, {
     transports: ['websocket'],
