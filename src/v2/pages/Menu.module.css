@@ -1,0 +1,67 @@
+.menu {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    color: var(--grid-lines-color-active);
+    padding: 5%;
+    /* font-size: 1.2rem; */
+}
+
+.btn {
+    display: block;
+    padding: 0.5em;
+    padding-top: 0;
+    padding-bottom: 0;
+    justify-content: flex-start;
+    flex-direction: column;
+    transition: height 0.3s, width 0.3s 0.3s, transform 0.3s, background-color 0.3s;
+    overflow: hidden;
+    height: 50px;
+    width: 250px;
+    gap: 0;
+}
+
+.btn button {
+    scale: 0.75;
+}
+
+.form-title {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form {
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    overflow: hidden;
+    border-radius: calc(25px - 0.5em);
+    height: calc(100% - 50px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.active {
+    color: var(--background-color);
+    padding-bottom: 0.5em;
+    background-color: var(--grid-lines-color-active);
+    width: var(--size);
+    height: 60dvh;
+    cursor: default;
+    transition: height 0.3s 0.3s, width 0.3s, padding 0.3s 0.3s, transform 0.3s, background-color 0.3s;
+}
+
+.inactive {
+    transform: scale(0.8);
+    transition: height 0.3s, width 0.3s 0.3s, transform 0.3s 0.3s, background-color 0.3s;
+}
+
+.form {
+    background-color: var(--background-color);
+    width: 100%;
+}

@@ -4,7 +4,22 @@
   --background-color: #260b2c;
   --grid-lines-color: #55194f;
   --neutral-color: #d56059;
-  --button-color: #6b2256;
+  --size: clamp(150px, 75vw, 500px);
+  
+  --background-color: #1e1d1b;
+  --background-color: #251e18;
+  --grid-lines-color-neutral: #736449;
+  --grid-lines-color-active: #ffe7c2;
+  --cross-color: #849547;
+  --naught-color: #6dc59b;
+  --naught-color: #09a08d;
+  --naught-color: #f75a0d;
+  
+  --cross-color: #849547;
+  --naught-color: #f75a0d;
+
+  --button-color: #251e18;
+  
 }
 
 * {
@@ -13,6 +28,12 @@
   box-sizing: border-box;
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
+
+  /* outline: 2px solid black; */
+}
+
+body {
+  background-color: var(--background-color);
 }
 
 .App {
@@ -30,20 +51,27 @@
   gap: 5%;
 }
 
+.tile span {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
 
+.tile span.visible {
+  opacity: 1;
+}
 
 .btn {
+  box-sizing: content-box;
   font-weight: 600;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5em;
-  padding: 0.7em;
+  font-size: 1.5rem;
+  padding: 0.5em 2em;
   border: none;
-  border-radius: 100px;
+  border-radius: 25px;
   cursor: pointer;
   gap: 0.5em;
-  width: 225px;
 }
 
 .btn.disabled {
@@ -62,14 +90,14 @@
 }
 
 .board {
-  font-size: 6em;
+  font-size: clamp(2.4em, 1.08vw, 6em);
   font-weight: 500;
-  width: 5em;
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  aspect-ratio: 1;
-  gap: 2%;
+  height: var(--size);
+  width: var(--size);
+  grid-template-columns: 30fr 2.5fr 30fr 2.5fr 30fr;
+  grid-template-rows: 30fr 2.5fr 30fr 2.5fr 30fr;
 }
 
 .tile {
@@ -78,6 +106,8 @@
   justify-content: center;
   background-color: var(--background-color);
   aspect-ratio: 1;
+  position: relative;
+  font-size: clamp(3rem, 20vw, 7rem);
 }
 
 .cross {
@@ -88,7 +118,7 @@
   color: var(--neutral-color);
 }
 
-.tite .naught, .tile .cross {
+.tile .naught, .tile .cross {
   position: absolute;
 }
 
@@ -97,7 +127,6 @@
 }
 
 .cross, .naught, .neutral {
-  font-size: 7rem;
   transition: opacity 0.2s !important;
 }
 
@@ -118,12 +147,16 @@
 
 .btn {
   background-color: var(--button-color);
+  color: var(--grid-lines-color-active);
+  transition: background-color 0.3s, color 0.3s;
+  border: 2px solid var(--grid-lines-color-active);
+}
+
+.btn:hover {
+  background-color: #ffe7c2;
   color: var(--background-color);
 }
 
-.board {
-  background-color: var(--grid-lines-color);
-}
 
 .input {
   text-align: center;
@@ -173,7 +206,7 @@
 
 .user-name, .room-id {
   font-size: 2em;
-  color: #d56059;
+  color: var(--grid-lines-color-active);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -229,4 +262,62 @@
 
 .current-turn {
   cursor: pointer;
+}
+
+.row-1 {
+  background-color: var(--grid-lines-color-neutral);
+  grid-column: 1 / 6;
+  grid-row: 2;
+}
+
+.row-2 {
+  background-color: var(--grid-lines-color-neutral);
+  grid-column: 1 / 6;
+  grid-row: 4;
+}
+
+.col-1 {
+  background-color: var(--grid-lines-color-neutral);
+  grid-row: 1 / 6;
+  grid-column: 2;
+}
+
+.col-2 {
+  background-color: var(--grid-lines-color-neutral);
+  grid-row: 1 / 6;
+  grid-column: 4;
+}
+
+.row-1.active, .row-2.active, .col-1.active, .col-2.active {
+  background-color: var(--grid-lines-color-active);
+}
+
+.col-1,
+.col-2 {
+  border-radius: 100px;
+  animation: height-animation 0.5s both;
+}
+
+.row-1,
+.row-2 {
+  border-radius: 100px;
+  animation: width-animation 0.5s both;
+}
+
+@keyframes height-animation {
+  0% {
+    transform: scaleY(0%);
+  }
+  100% {
+    transform: scaleY(100%);
+  }
+}
+
+@keyframes width-animation {
+  0% {
+    transform: scaleX(0%);
+  }
+  100% {
+    transform: scaleX(100%);
+  }
 }

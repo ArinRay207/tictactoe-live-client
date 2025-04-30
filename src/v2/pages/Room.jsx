@@ -1,0 +1,181 @@
+import React, { useEffect, useState } from 'react'
+import { useParams, useSearchParams } from 'react-router-dom';
+import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import O from '../components/O';
+import X from '../components/X';
+import Board from '../components/Board';
+import { TicTacToe } from '../../TicTacToe';
+import useSocket from '../hooks/useSocket';
+import { eventTypes } from '../constants/eventTypes';
+
+import styles from './Room.module.css'
+import { N } from '../constants/constants.js';
+
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CheckIcon from '@mui/icons-material/Check';
+import ShareIcon from '@mui/icons-material/Share';
+
+const Room = () => {
+	const { roomId } = useParams();
+	const [room, setRoom] = useState();
+	const [ticTacToe, setTicTacToe] = useState(new TicTacToe());
+	const [firstTurn, setFirstTurn] = useState(null);
+	const [myPlayer, setMyPlayer] = useState(null);
+	const [isCopyClicked, setIsCopyCLicked] = useState(false);
+	const [isCopyLinkClicked, setIsCopyLinkCLicked] = useState(false);
+	const [searchParams, setSearchParams] = useSearchParams();
+
+	const socket = useSocket();
+
+	useEffect(() => {
+		if (socket) {
+			const username = searchParams.get("username");
+			socket.send(JSON.stringify({ type: eventTypes.JOIN, payload: { username, roomId } }))
+
+			socket.onmessage = (event) => {
+				const { type, payload } = JSON.parse((event.data));
+
+				switch (type) {
+					case eventTypes.UPDATE_ROOM:
+						setRoom(payload.room);
+						setMyPlayer(payload.player);
+						if (payload.round && payload.round !== null) {
+							setFirstTurn(payload.round.firstTurn);
+							setTicTacToe(payload.round.game);
+						}
+						break;
+
+					case eventTypes.START:
+						setFirstTurn(payload.firstTurn);
+						setTicTacToe(payload.game);
+						break;
+
+					case eventTypes.MOVE:
+						setTicTacToe(payload.game);
+						break;
+
+					case eventTypes.ERROR:
+						alert(JSON.stringify(payload.message))
+				}
+			};
+		}
+	}, [socket])
+
+	if (!socket) {
+		return <div></div>
+	}
+
+	const handleClick = (x, y) => {
+		if (isMyTurn())
+			socket.send(JSON.stringify({ type: eventTypes.MOVE, payload: { roomId: roomId, move: { to: { x, y } } } }))
+	}
+
+	const handleStart = () => {
+		socket.send(JSON.stringify({ type: eventTypes.START, payload: { roomId } }))
+	}
+
+	const isTurn = (id) => {
+		return ((ticTacToe.turn + firstTurn) % N) === id;
+	}
+
+	const isMyTurn = () => {
+		return ((ticTacToe.turn + firstTurn) % N) === myPlayer?.id;
+	}
+
+	const handleCopy = async () => {
+		await navigator.clipboard.writeText(roomId);
+		setIsCopyCLicked(true);
+		setTimeout(() => setIsCopyCLicked(false), 2000);
+	}
+
+	const handleCopyLink = async () => {
+		// TODO CONSTRUCT LINK HERE
+		setIsCopyCLicked(true);
+		setTimeout(() => setIsCopyCLicked(false), 2000);
+	}
+
+	return (
+		<div className={`page ${styles['room']}`}>
+			<div className={styles['room-id']}>
+				<span>ROOM ID: {roomId}</span>
+				{isCopyClicked === false ? <ContentCopyIcon className={`${styles['icon']}`} onClick={handleCopy} /> : <CheckIcon className={`${styles['icon']}`} onClick={handleCopy} />}
+			</div>
+			<div className={`${styles['game-container']}`}>
+				<div className={`${styles['username-container']} ${styles['left']}`}>
+					<div className={`${styles['spacer']}`} />
+
+					{
+						room?.players?.length > 0 &&
+						<div className={`${styles['user-name']} ${isTurn((room.players[0]).id) && styles['current']}`}>
+							{
+								firstTurn !== null && (
+									firstTurn === 0 ? (
+										<div className={`${styles['piece']}`}>
+											<X isVisible={true} />
+										</div>
+									) : (
+										<div className={`${styles['piece']}`}>
+											<O isVisible={true} />
+										</div>
+									)
+								)
+							}
+							{room?.players[0]?.isConnected && room?.players[0]?.username}
+						</div>
+					}
+				</div>
+				<div className={`${styles['middle-container']} ${firstTurn === null ? styles['inactive'] : styles['active']}`}>
+					<span>vs</span>
+					<div>
+						<Board isActive={firstTurn !== null} drawAnimations={true} delayAnimationsBy={'0.9s'} ticTacToe={ticTacToe} onClick={handleClick} showHover={isMyTurn()} />
+					</div>
+				</div>
+				<div className={`${styles['username-container']} ${styles['right']}`}>
+					{
+						room?.players.length > 1 ?
+							(
+								<div className={`${styles['user-name']} ${isTurn((room.players[1]).id) && styles['current']}`}>
+									{
+										firstTurn !== null && (
+											firstTurn === 0 ? (
+												<div className={`${styles['piece']}`}>
+													<O isVisible={true} />
+												</div>
+											) : (
+												<div className={`${styles['piece']}`}>
+													<X isVisible={true} />
+												</div>
+											)
+										)
+									}
+									{(room?.players[1]?.isConnected ? room?.players[1]?.username : "...")}
+								</div>
+							)
+							:
+							(
+								<div className={`${styles['user-name']}`}>
+									...
+								</div>
+							)
+					}
+					<div className={`${styles['spacer']}`} />
+
+				</div>
+			</div>
+			<div className={`${styles['btn-container']}`}>
+				{
+					firstTurn === null &&
+					<button
+						className={`btn`}
+						onClick={handleStart}
+					>
+						START
+					</button>
+				}
+			</div>
+		</div>
+	)
+}
+
+export default Room;

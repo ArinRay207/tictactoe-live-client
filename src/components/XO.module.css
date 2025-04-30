@@ -1,0 +1,110 @@
+@property --a {
+    syntax: "<angle>";
+    inherits: false;
+    initial-value: 0deg;
+}
+
+@property --l {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
+.X, .O {
+    height: 70%;
+    width: 70%;
+    --t: 25%;
+    position: absolute;
+}
+
+.X {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.X div {
+    border-radius: 1000px;
+    height: calc(1.414 * 100%);
+    width: calc(var(--t) / 2);
+    position: absolute;
+    --l: 100%;
+    background: linear-gradient(var(--cross-color) 0% var(--l), transparent var(--l));
+    /* background: var(--cross-color); */
+}
+
+.X:not(.visible) {
+    opacity: 0;
+}
+
+.O:not(.visible) {
+    opacity: 0;
+}
+
+.X:not(.visible):hover {
+    opacity: 50%;
+}
+
+.O:not(.visible):hover {
+    opacity: 50%;
+}
+
+.dia1 {
+    transform: rotate(45deg);
+    /* --l: 100%; */
+}
+
+.dia2 {
+    transform: rotate(-45deg);
+    /* --l: 100%; */
+}
+
+.X.visible .dia1 {
+    animation: X 0.75s both;
+}
+
+.X.visible .dia2 {
+    animation: X 0.75s 0.25s both;
+}
+
+.O.visible {
+    animation: O 1s;
+}
+
+.O {
+    border-radius: 1000px;
+    background: conic-gradient(var(--naught-color) 0% var(--a), transparent var(--a));
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: --a 0.3s;
+    --a: 360deg;
+}
+  
+.O::after {
+    content: "";
+    height: calc(100% - var(--t));
+    width: calc(100% - var(--t));
+    border-radius: 1000px;
+    background-color: var(--background-color);
+}
+  
+@keyframes O {
+    0% {
+      --a: 0deg;
+    }
+    100% {
+      --a: 360deg;
+    }
+}
+  
+@keyframes X {
+    0% {
+      --l: 0%;
+    }
+    100% {
+      --l: 100%;
+    }
+}
+  

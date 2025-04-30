@@ -10,26 +10,26 @@ const JoinRoom = () => {
     <div>
       <div className='heading'>Join Room</div>
       <div className='main-container'>
-        <input 
+        <input
           placeholder='Username' className='input'
-          value={username} 
+          value={username}
           onChange={(e) => {
             setUsername(e.target.value)
-          }} 
+          }}
         />
 
-        <input 
+        <input
           placeholder='Room Id' className='input'
-          value={roomId} 
+          value={roomId}
           onChange={(e) => {
             setRoomId(e.target.value)
-          }} 
+          }}
         />
 
         <button
           className='btn'
           onClick={() => {
-						localStorage.setItem("username", username);
+            localStorage.setItem("username", username);
             navigate(`/room/${roomId}`);
           }}
         >
@@ -37,7 +37,7 @@ const JoinRoom = () => {
         </button>
       </div>
     </div>
-    
+
   )
 }
 

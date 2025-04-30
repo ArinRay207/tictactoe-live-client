@@ -12,8 +12,8 @@ const CreateRoom = () => {
 		<div>
 			<div className='heading'>Create Room</div>
 			<div className='main-container'>
-				<input type='text' required placeholder='Username' className='input' value={username} onChange={(e) => {setUsername(e.target.value)}} />
-				<button 
+				<input type='text' required placeholder='Username' className='input' value={username} onChange={(e) => { setUsername(e.target.value) }} />
+				<button
 					className='btn'
 					onClick={() => {
 						if (username === '') {

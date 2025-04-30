@@ -1,0 +1,169 @@
+.room {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.piece {
+    height: calc(var(--size) / 3);
+    width: calc(var(--size) / 3);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+}
+
+.user-name {
+    color: var(--grid-lines-color-active);
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(0.8rem, 4vw, 1.8rem);
+}
+
+.current {
+    transform: scale(1.1);
+}
+
+.game-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    gap: 2rem;
+}
+
+.board {
+    width: var(--size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: flex 0.3s 0.3s;
+}
+
+
+
+.room-id,.btn-container {
+    gap: 0.5em;
+    color: var(--grid-lines-color-active);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1.1rem, 6vw, 2rem);
+    height: 15dvh;
+}
+
+.room-id > .icon {
+    cursor: pointer;
+}
+
+.username-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+} 
+
+
+
+.left {
+    justify-content: flex-end;
+}
+   
+.right {
+    justify-content: flex-start;
+}
+
+.middle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--grid-lines-color-active);
+    font-size: clamp(0.7rem, 4vw, 1.7rem);;
+    width: 50px;
+    /* text-align: center; */
+    /* overflow: hidden; */
+    transition: width 0.3s 0.3s;
+}
+
+.middle-container.active {
+    width: var(--size);
+}
+
+.middle-container > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 0;
+    overflow: hidden;
+    transition: width 0.3s 0.3s;
+}
+
+.middle-container.active > div {
+    width: var(--size);
+}
+
+.middle-container span {    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    overflow: hidden;
+    transition: width 0.3s;
+}
+
+.middle-container.active span {
+    width: 0;
+    overflow: hidden;
+}
+
+.spacer {
+    flex: 0;
+    transition: flex 0.5s;
+}
+
+
+@media screen and (max-width: 700px) {
+    .game-container {
+        justify-content: space-between;
+    }
+
+    .room-id, .btn-container {
+        height: 10vh;
+    }
+
+    .username-container {
+        flex-direction: column;
+        height: 100%;
+        align-self: center;
+        justify-content: center;
+    }
+
+    .game-container:has(.active) .spacer {
+        /* height: 100%; */
+        flex: 1;
+    }
+
+    .game-container {
+        width: 100%;
+    }
+
+    .middle-container.active {
+        width: 0 !important;
+        overflow: visible !important;
+    }
+
+    .middle-container.active > div {
+        width: var(--size);
+        overflow: visible;
+    }
+}
+

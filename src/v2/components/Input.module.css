@@ -1,0 +1,24 @@
+.input {
+    color: var(--grid-lines-color-active);
+    border: none;
+    font-size: 1em;
+    background-color: transparent;
+    border-bottom: 1px solid var(--grid-lines-color-active);
+}
+
+.input::placeholder {
+    color: var(--grid-lines-color-active);
+}
+
+.input:focus, .input:focus-visible {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid var(--grid-lines-color-active);
+}
+
+.input-container {
+    color: var(--grid-lines-color-active);
+    text-align: left;
+    display: grid;
+    gap: 0.5em;
+}
