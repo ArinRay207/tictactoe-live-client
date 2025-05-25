@@ -4,7 +4,7 @@
   --background-color: #260b2c;
   --grid-lines-color: #55194f;
   --neutral-color: #d56059;
-  --size: clamp(150px, 75vw, 500px);
+  --size: min(95vw, 500px);
   
   --background-color: #1e1d1b;
   --background-color: #251e18;
@@ -304,6 +304,113 @@ body {
   animation: width-animation 0.5s both;
 }
 
+.board-container {
+  height: var(--size);
+  width: var(--size);
+  position: relative;
+}
+
+.board {
+  position: absolute;
+}
+
+@property --v {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+}
+
+.result-state {
+  height: 100%;
+  width: 100%;
+  /* background-color: red; */
+  position: absolute;
+}
+
+.result-state.row {
+  display: grid;
+  grid-template-rows: 15fr 2.5fr 32.5fr 2.5fr 32.5fr 2.5fr 15fr;
+  width: 100%;
+  height: 100%;
+}
+
+.result-state.col {
+  display: grid;
+  grid-template-columns: 15fr 2.5fr 32.5fr 2.5fr 32.5fr 2.5fr 15fr;
+  width: 100%;
+  height: 100%;
+}
+
+.result-state.dia > .rs {
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+}
+
+.result-state .rs {
+  background-color: var(--grid-lines-color-active);
+  --v: 0%;
+  opacity: 60%;
+  border-radius: 100px;
+}
+
+.rs-0,
+.rs-1,
+.rs-2 {
+  height: 100%;
+  transform-origin: left center;
+  animation: zeroToHund 0.5s both;
+  transform: scaleX(var(--v));
+}
+
+.rs-3,
+.rs-4,
+.rs-5 {
+  height: 100%;
+  transform-origin: top center;
+  animation: zeroToHund 0.5s both;
+  transform: scaleY(var(--v));
+}
+
+.rs-3 {
+  left: calc(100% / 6);
+}
+
+.rs-4 {
+  left: calc(100% / 2);
+}
+
+.rs-5 {
+  left: calc(500% / 6);
+}
+
+.rs-6,
+.rs-7 {
+  height: 140%;
+  width: 2.5%;
+  left: calc(50%);
+  top: calc(50%);
+  transform-origin: center center;
+  animation: zeroToHund 0.5s both;
+  --v: 0%;
+  background: linear-gradient(var(--grid-lines-color-active) 0% var(--v), transparent var(--v));
+}
+
+.rs-6 {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.rs-7 {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.home .board {
+  height: var(--size);
+  width: var(--size);
+  position: relative;
+}
+
+
 @keyframes height-animation {
   0% {
     transform: scaleY(0%);
@@ -319,5 +426,14 @@ body {
   }
   100% {
     transform: scaleX(100%);
+  }
+}
+
+@keyframes zeroToHund {
+  0% {
+    --v: 0%;
+  }
+  100% {
+    --v: 100%;
   }
 }

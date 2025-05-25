@@ -25,7 +25,7 @@
     font-size: clamp(0.8rem, 4vw, 1.8rem);
 }
 
-.current {
+.current .piece {
     transform: scale(1.1);
 }
 
@@ -58,7 +58,7 @@
     align-items: center;
     justify-content: center;
     font-size: clamp(1.1rem, 6vw, 2rem);
-    height: 15dvh;
+    height: 20dvh;
 }
 
 .room-id > .icon {
@@ -70,9 +70,8 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+    flex-direction: column;
 } 
-
-
 
 .left {
     justify-content: flex-end;
@@ -130,10 +129,18 @@
     transition: flex 0.5s;
 }
 
+.score {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--grid-lines-color-active);
+}
+
 
 @media screen and (max-width: 700px) {
     .game-container {
-        justify-content: space-between;
+        justify-content: center;
+        flex-direction: column;
     }
 
     .room-id, .btn-container {
@@ -141,10 +148,9 @@
     }
 
     .username-container {
-        flex-direction: column;
-        height: 100%;
+        flex-direction: row;
         align-self: center;
-        justify-content: center;
+        justify-content: space-between;
     }
 
     .game-container:has(.active) .spacer {
@@ -156,7 +162,12 @@
         width: 100%;
     }
 
+    .middle-container {
+        height: 0px;
+    }
+    
     .middle-container.active {
+        height: var(--size);
         width: 0 !important;
         overflow: visible !important;
     }
@@ -165,5 +176,23 @@
         width: var(--size);
         overflow: visible;
     }
-}
 
+    .piece {
+        height: 70px;
+        width: 70px;
+    }
+
+    .user-name {
+        flex: 1;
+    }
+
+    .score {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 70px;
+        min-width: 70px;
+        color: var(--grid-lines-color-active);
+        font-size: 2rem;
+    }
+}

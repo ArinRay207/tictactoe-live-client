@@ -50,7 +50,7 @@
     color: var(--background-color);
     padding-bottom: 0.5em;
     background-color: var(--grid-lines-color-active);
-    width: var(--size);
+    width: calc(var(--size) * 0.9);
     height: 60dvh;
     cursor: default;
     transition: height 0.3s 0.3s, width 0.3s, padding 0.3s 0.3s, transform 0.3s, background-color 0.3s;

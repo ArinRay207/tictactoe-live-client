@@ -39,20 +39,22 @@ const Room = () => {
 				switch (type) {
 					case eventTypes.UPDATE_ROOM:
 						setRoom(payload.room);
-						setMyPlayer(payload.player);
+						if (payload.player) {
+							setMyPlayer(payload.player);
+						}
 						if (payload.round && payload.round !== null) {
 							setFirstTurn(payload.round.firstTurn);
-							setTicTacToe(payload.round.game);
+							setTicTacToe(new TicTacToe(payload.round.game.board));
 						}
 						break;
 
 					case eventTypes.START:
 						setFirstTurn(payload.firstTurn);
-						setTicTacToe(payload.game);
+						setTicTacToe(new TicTacToe(payload.game.board));
 						break;
 
 					case eventTypes.MOVE:
-						setTicTacToe(payload.game);
+						setTicTacToe(new TicTacToe(payload.game.board));
 						break;
 
 					case eventTypes.ERROR:
@@ -102,27 +104,32 @@ const Room = () => {
 				{isCopyClicked === false ? <ContentCopyIcon className={`${styles['icon']}`} onClick={handleCopy} /> : <CheckIcon className={`${styles['icon']}`} onClick={handleCopy} />}
 			</div>
 			<div className={`${styles['game-container']}`}>
-				<div className={`${styles['username-container']} ${styles['left']}`}>
-					<div className={`${styles['spacer']}`} />
-
+				<div className={`${styles['username-container']} ${styles['left']} ${isTurn((room?.players[0])?.id) && styles['current']}`}>
 					{
 						room?.players?.length > 0 &&
-						<div className={`${styles['user-name']} ${isTurn((room.players[0]).id) && styles['current']}`}>
+						<>
 							{
-								firstTurn !== null && (
-									firstTurn === 0 ? (
-										<div className={`${styles['piece']}`}>
+								firstTurn !== null &&
+								<div className={`${styles['piece']}`}>
+									{
+										firstTurn === 0 ? (
 											<X isVisible={true} />
-										</div>
-									) : (
-										<div className={`${styles['piece']}`}>
+										) : (
 											<O isVisible={true} />
-										</div>
-									)
-								)
+										)
+									}
+								</div>
 							}
-							{room?.players[0]?.isConnected && room?.players[0]?.username}
-						</div>
+							<div className={`${styles['user-name']}`}>
+								{room?.players[0]?.isConnected && room?.players[0]?.username}
+							</div>
+							{
+								firstTurn !== null &&
+								<div className={`${styles['score']}`}>
+									{room?.players[0]?.score}
+								</div>
+							}
+						</>
 					}
 				</div>
 				<div className={`${styles['middle-container']} ${firstTurn === null ? styles['inactive'] : styles['active']}`}>
@@ -131,26 +138,35 @@ const Room = () => {
 						<Board isActive={firstTurn !== null} drawAnimations={true} delayAnimationsBy={'0.9s'} ticTacToe={ticTacToe} onClick={handleClick} showHover={isMyTurn()} />
 					</div>
 				</div>
-				<div className={`${styles['username-container']} ${styles['right']}`}>
+				<div className={`${styles['username-container']} ${styles['right']} ${isTurn((room?.players[1])?.id) && styles['current']}`}>
 					{
 						room?.players.length > 1 ?
 							(
-								<div className={`${styles['user-name']} ${isTurn((room.players[1]).id) && styles['current']}`}>
+								<>
+
 									{
-										firstTurn !== null && (
-											firstTurn === 0 ? (
-												<div className={`${styles['piece']}`}>
+										firstTurn !== null &&
+										<div className={`${styles['piece']}`}>
+											{
+												firstTurn === 0 ? (
 													<O isVisible={true} />
-												</div>
-											) : (
-												<div className={`${styles['piece']}`}>
+												) : (
 													<X isVisible={true} />
-												</div>
-											)
-										)
+												)
+											}
+										</div>
 									}
-									{(room?.players[1]?.isConnected ? room?.players[1]?.username : "...")}
-								</div>
+
+									<div className={`${styles['user-name']} ${isTurn((room.players[1]).id) && styles['current']}`}>
+										{(room?.players[1]?.isConnected ? room?.players[1]?.username : "...")}
+									</div>
+									{
+										firstTurn !== null &&
+										<div className={`${styles['score']}`}>
+											{room?.players[1]?.score}
+										</div>
+									}
+								</>
 							)
 							:
 							(
@@ -159,7 +175,6 @@ const Room = () => {
 								</div>
 							)
 					}
-					<div className={`${styles['spacer']}`} />
 
 				</div>
 			</div>
@@ -171,6 +186,16 @@ const Room = () => {
 						onClick={handleStart}
 					>
 						START
+					</button>
+				}
+
+				{
+					ticTacToe.hasEnded() &&
+					<button
+						className={`btn`}
+						onClick={handleStart}
+					>
+						RESTART
 					</button>
 				}
 			</div>
